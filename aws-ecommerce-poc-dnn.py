@@ -1,7 +1,6 @@
 import numpy as np
 import os
 import tensorflow as tf
-from tensorflow.python.estimator.export.export import build_raw_serving_input_receiver_fn
 
 def estimator_fn(run_config, hyperparameters):
     # Defines the features columns that will be the input of the estimator
@@ -37,9 +36,6 @@ def _input_fn(training_dir, training_filename):
 
 def serving_input_fn(hyperparameters):
     # defines the input placeholder
-    avg_session = tf.placeholder(tf.float32)
-    app_time = tf.placeholder(tf.float32)
-    web_time = tf.placeholder(tf.float32)
-    membership = tf.placeholder(tf.float32)
+    feature_spec = {'input': tf.FixedLenFeature(dtype=tf.float32, shape=[4])}
     # returns the ServingInputReceiver object.
-    return build_raw_serving_input_receiver_fn({"input": np.array(avg_session, app_time, web_time, membership)})()
+    return tf.estimator.export.build_raw_serving_input_receiver_fn(feature_spec)()

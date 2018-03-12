@@ -5,7 +5,7 @@ region = boto3.Session().region_name
 print(' ## Region ' + region)
 
 print(' ### Allocating SageMaker instance ')
-tf_estimator = TensorFlow(entry_point='aws-ecommerce-poc-dnn.py', role='SHADOWED ROLE',
+tf_estimator = TensorFlow(entry_point='aws-ecommerce-poc-dnn.py', role='SECRET',
                           training_steps=300000, evaluation_steps=100,
                           train_instance_count=1, train_instance_type='ml.c4.8xlarge',
                           output_path='s3://hackathon-pa3mm/ecommerce-poc/output')
