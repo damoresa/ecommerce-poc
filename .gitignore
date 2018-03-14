@@ -1,4 +1,6 @@
 .idea/
+model/
+output/
 samples/
 __pycache__/
 secrets
