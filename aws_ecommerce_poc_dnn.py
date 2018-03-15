@@ -18,15 +18,15 @@ def estimator_fn(run_config, hyperparameters):
 
 def train_input_fn(training_dir, hyperparameters):
     # invokes _input_fn with training dataset
-    return _input_fn(training_dir, 'AWS-Ecommerce-Train.csv')
+    return _generate_input_fn(training_dir, 'AWS-Ecommerce-Train.csv')
 
 
 def eval_input_fn(training_dir, hyperparameters):
     # invokes _input_fn with evaluation dataset
-    return _input_fn(training_dir, 'AWS-Ecommerce-Test.csv')
+    return _generate_input_fn(training_dir, 'AWS-Ecommerce-Test.csv')
 
 
-def _input_fn(training_dir, training_filename):
+def _generate_input_fn(training_dir, training_filename):
     # reads the dataset using tf.dataset API
     training_set = tf.contrib.learn.datasets.base.load_csv_without_header(
         filename=os.path.join(training_dir, training_filename), target_dtype=np.float32, features_dtype=np.float32)
@@ -42,10 +42,5 @@ def _input_fn(training_dir, training_filename):
 def serving_input_fn(hyperparameters):
     # defines the input placeholder
     feature_spec = {INPUT_TENSOR_NAME: tf.FixedLenFeature(dtype=tf.float32, shape=[4])}
-    # returns the ServingInputReceiver object.
-    serialized_tf_example = tf.placeholder(dtype=tf.string,
-                                           shape=[None],
-                                           name='inputs_tensors')
-    receiver_tensors = {'inputs': serialized_tf_example}
-    features = tf.parse_example(serialized_tf_example, feature_spec)
-    return tf.estimator.export.ServingInputReceiver(features, receiver_tensors)
+    # # returns the ServingInputReceiver object.
+    return tf.estimator.export.build_parsing_serving_input_receiver_fn(feature_spec)()

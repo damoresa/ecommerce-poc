@@ -52,8 +52,7 @@ def main(argv):
 
     regressor.export_savedmodel(
         export_dir_base='output',
-        serving_input_receiver_fn=serving_fn,
-        as_text=True)
+        serving_input_receiver_fn=serving_fn)
 
     print()
 
