@@ -5,3 +5,4 @@ output/
 samples/
 __pycache__/
 secrets
+*.pyc
